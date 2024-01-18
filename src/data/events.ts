@@ -10,7 +10,7 @@ export const dotaEvents: DotaEvent[] = [
   { time: 180, event: "Lotus and Bounty Rune", eventId: "lotus_bounty" }, //3
   { time: 240, event: "Water Rune", eventId: "water_rune" }, //4
   { time: 360, event: "Active Rune", eventId: "active_rune" }, //6
-  { time: 420, event: "Wisdom Rune", eventId: "wisdom_rune", past: true }, //7
+  { time: 420, event: "Wisdom Rune", eventId: "wisdom_rune" }, //7
   { time: 480, event: "Active Rune", eventId: "active_rune" }, //8
   { time: 540, event: "Lotus and Bounty Rune", eventId: "lotus_bounty" }, //9
   { time: 600, event: "Active Rune", eventId: "active_rune" }, //10

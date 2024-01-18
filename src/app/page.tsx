@@ -4,7 +4,7 @@ import { formatTime } from "@/utils/timeUtils";
 import { START_MAIN_TIMER_VALUE } from "@/common/constants";
 import { type DotaEvent, dotaEvents } from "@/data/events";
 import { sortDotaEvents } from "@/utils/sortUtils";
-import AudioPlayer from "@/components/AudioPlayer"
+import AudioPlayer from "@/components/AudioPlayer";
 
 export default function Home() {
   const [isMainTimerActive, setIsMainTimerActive] = useState(false); //seconds
@@ -34,11 +34,11 @@ export default function Home() {
   }, [isMainTimerActive]);
   useEffect(() => {
     const handleEvent = () => {
-      const currentEvent = dotaEvents.find((event) => event.time === mainTimer);
+      const currentEvent = mainEvents.find((event) => event.time === mainTimer);
 
       if (currentEvent) {
         switch (currentEvent.eventId) {
-          case 'water_rune':
+          case "water_rune":
             return <AudioPlayer src="/assets/audio/water_rune.mp3" />;
           default:
             return null;
@@ -47,14 +47,13 @@ export default function Home() {
     };
 
     handleEvent(); // Викликаємо функцію для обробки подій
-    const updatedEvents = dotaEvents.map((event) => {
+    const updatedEvents = mainEvents.map((event) => {
       if (mainTimer > event.time && !event.past) {
         return { ...event, past: true };
       }
       return event;
     });
 
-    
     setMainEvents(updatedEvents);
   }, [mainTimer]);
 
@@ -63,12 +62,36 @@ export default function Home() {
   const endGameHandler = () => setIsMainTimerActive(false);
 
   const roshKilledButtonHandler = () => {
-    setRoshRespownStart(mainTimer + 480);
-    setRoshRespownEnd(mainTimer + 660);
+    const roshRespownStartTime = mainTimer + 480;
+    const roshRespownEndTime = mainTimer + 660;
+    setRoshRespownStart(roshRespownStartTime);
+    setRoshRespownEnd(roshRespownEndTime);
+    setMainEvents((prev) => [
+      ...prev,
+      {
+        time: roshRespownStartTime,
+        event: "Rosh Respown Start",
+        eventId: "rosh_respown_start",
+      },
+      {
+        time: roshRespownEndTime,
+        event: "Rosh Respown End",
+        eventId: "rosh_respown_end",
+      },
+    ]);
   };
 
   const tormentorKilledButtonHandler = () => {
-    setTormentorRespown(mainTimer + 600);
+    const tormentorRespownTime = mainTimer + 600;
+    setTormentorRespown(tormentorRespownTime);
+    setMainEvents((prev) => [
+      ...prev,
+      {
+        time: tormentorRespownTime,
+        event: "Tormentor Respown",
+        eventId: "tormentor_respown",
+      },
+    ]);
   };
 
   return (
@@ -94,12 +117,19 @@ export default function Home() {
       </div>
       <div className="flex w-full flex-row">
         <div className="flex w-5/6 flex-col gap-3">
-          {sortDotaEvents(mainEvents).map(({event, eventId, time, past}, idx) => (
-          <div key={idx} className={`flex flex-row gap-3 ${past && "line-through text-gray-700"}`}>
-            <div>{formatTime(time)}</div>
-            <div>{event}</div>
-          </div>
-          ))}
+          {sortDotaEvents(mainEvents).map(
+            ({ event, eventId, time, past }, idx) => (
+              <div
+                key={idx}
+                className={`flex flex-row gap-3 ${
+                  past && "line-through text-gray-700"
+                }`}
+              >
+                <div>{formatTime(time)}</div>
+                <div>{event}</div>
+              </div>
+            )
+          )}
         </div>
         <div className="flex w-1/6 flex-col items-center gap-5">
           <button
