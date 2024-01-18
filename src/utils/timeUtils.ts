@@ -1,9 +1,15 @@
 export const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-  
-    // Use string interpolation or concatenation to format the result
-    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-    
+    // Визначте, чи відлік від'ємний
+    const isNegative = seconds < 0;
+
+    // Перетворіть від'ємний час на позитивний для розрахунків
+    const absoluteSeconds = Math.abs(seconds);
+
+    const minutes = Math.floor(absoluteSeconds / 60);
+    const remainingSeconds = absoluteSeconds % 60;
+
+    // Використовуйте string interpolation або конкатенацію для форматування результату
+    const formattedTime = `${isNegative ? '-' : ''}${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+
     return formattedTime;
   }

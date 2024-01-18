@@ -1,0 +1,3 @@
+const START_MAIN_TIMER_VALUE = -60;
+
+export { START_MAIN_TIMER_VALUE };
